@@ -32,23 +32,6 @@
         android:layout_centerHorizontal="true" >
 
         <TextView
-            android:id="@+id/minutes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/minutes"
-            android:textSize="80sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/colon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/minutes"
-            android:text="@string/colon"
-            android:textSize="80sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,19 +49,11 @@
         android:layout_centerHorizontal="true" >
 
         <Button
-            android:id="@+id/startStop"
+            android:id="@+id/AddReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onStartStop"
-            android:text="@string/startStop" />
-
-        <Button
-            android:id="@+id/resetLap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/startStop"
-            android:onClick="onLapReset"
-            android:text="@string/resetLap" />
+            android:text="@string/AddReset" />
     </RelativeLayout>
 
 </RelativeLayout>
