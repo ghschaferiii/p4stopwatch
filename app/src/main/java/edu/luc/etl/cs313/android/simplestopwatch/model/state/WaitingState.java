@@ -12,9 +12,9 @@ class WaitingState implements StopwatchState {
 
     @Override
     public void onClick() {
-        if (sm.actionDisplayTime() < 99){
+        if (sm.actionGetTime() < 99){
             sm.actionInc();
-            sm.updateUIWaittime();
+            sm.ac
         }
         else{
             sm.updateUIWaittime();

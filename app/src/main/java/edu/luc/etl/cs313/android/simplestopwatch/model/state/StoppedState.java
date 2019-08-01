@@ -10,6 +10,8 @@ class StoppedState implements StopwatchState {
 
     private final StopwatchSMStateView sm;
 
+
+    // when user click the button
     @Override
     public void onClick(){
         sm.toWaitingState();

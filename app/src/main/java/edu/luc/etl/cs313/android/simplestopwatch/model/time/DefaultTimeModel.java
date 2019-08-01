@@ -7,37 +7,32 @@ import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.*;
  */
 public class DefaultTimeModel implements TimeModel {
 
-    private int runningTime = 0;
+    private int time = 0;
+    private int threeSecondTime = 3;
 
-    private int lapTime = -1;
 
     @Override
-    public void resetRuntime() {
-        runningTime = 0;
+    public void incTime() {
+        time = (time + SEC_PER_TICK) % SEC_PER_HOUR;
     }
 
     @Override
-    public void incRuntime() {
-        runningTime = (runningTime + SEC_PER_TICK) % SEC_PER_HOUR;
+    public void decTime() {
+        time = (time - SEC_PER_TICK) % SEC_PER_HOUR;
     }
 
     @Override
-    public void decRuntime() {
-        runningTime = (runningTime - SEC_PER_TICK) % SEC_PER_HOUR;
+    public int getTime() {
+        return time;
     }
 
     @Override
-    public int getRuntime() {
-        return runningTime;
+    public void resetTime(){
+        time = 0;
     }
 
     @Override
-    public void setLaptime() {
-        lapTime = runningTime;
-    }
+    public decSecondTime
 
-    @Override
-    public int getLaptime() {
-        return lapTime;
-    }
+
 }
