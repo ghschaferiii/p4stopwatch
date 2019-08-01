@@ -35,7 +35,6 @@
             android:id="@+id/seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/colon"
             android:text="@string/seconds"
             android:textSize="80sp"
             android:textStyle="bold" />

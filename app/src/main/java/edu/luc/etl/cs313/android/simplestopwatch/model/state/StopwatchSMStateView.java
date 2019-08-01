@@ -23,11 +23,10 @@ interface StopwatchSMStateView {
     void actionInc();       // increment the timer
     void actionDec();       // decrement the timer
     int actionGetTime();
-    init actionResetTime();
 
     void actionDecThreeSecondTime();
     void actionResetThreeSecondTime();
-    void actionGetThreeSecondTime();
+    int actionGetThreeSecondTime();
 
     void actionUpdateView();    // update state view on top of timer
     void actionBeeping();      // start beeping

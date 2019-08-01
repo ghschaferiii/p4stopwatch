@@ -14,6 +14,7 @@ class AlarmState implements StopwatchState {
     @Override
     public void onClick(){
         sm.toStoppedState();
+        sm.actionResetThreeSecondTime();
     }
 
     @Override

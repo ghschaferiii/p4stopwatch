@@ -43,7 +43,7 @@ public class DefaultStopwatchStateMachine implements StopwatchStateMachine {
     @Override public synchronized void onTick()      { state.onTick(); }
     @Override public synchronized void onClick()      { state.onClick(); }
 
-    @Override public void updateUIRuntime() { uiUpdateListener.updateTime(timeModel.getRuntime()); }
+    @Override public void updateUIRuntime() { uiUpdateListener.updateTime(timeModel.getTime()); }
 
     // known states
     private final StopwatchState STOPPED     = new StoppedState(this);
@@ -59,8 +59,15 @@ public class DefaultStopwatchStateMachine implements StopwatchStateMachine {
 
     // actions
     @Override public void actionInit()       { toStoppedState(); actionReset(); }
-    @Override public void actionReset()      { timeModel.resetRuntime(); actionUpdateView(); }
-    @Override public void actionInc()        { timeModel.incRuntime(); actionUpdateView(); }
-    @Override public void actionDec()        { timeModel.incRuntime(); actionUpdateView(); }
+    @Override public void actionReset()      { timeModel.resetTime(); actionUpdateView(); }
+    @Override public void actionInc()        { timeModel.incTime(); actionUpdateView(); }
+    @Override public void actionDec()        { timeModel.decTime(); actionUpdateView(); }
+    @Override public int actionGetTime() { return timeModel.getTime();}
+    @Override public void actionDecThreeSecondTime() {timeModel.decThreeSecondTime(); }
+    @Override public void actionResetThreeSecondTime() {timeModel.resetThreeSecondTime();}
+    @Override public int actionGetThreeSecondTime() {return timeModel.getThreeSecondTime();}
+    @Override public void actionBeeping() {timeModel.beeping();}
+
+
     @Override public void actionUpdateView() { state.updateView(); }
 }

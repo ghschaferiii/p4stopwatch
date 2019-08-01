@@ -14,10 +14,10 @@ class WaitingState implements StopwatchState {
     public void onClick() {
         if (sm.actionGetTime() < 99){
             sm.actionInc();
-            sm.ac
+            sm.actionResetThreeSecondTime();
         }
         else{
-            sm.updateUIWaittime();
+            sm.actionResetThreeSecondTime();
         }
     }
 
