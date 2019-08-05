@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import edu.luc.etl.cs313.android.simplestopwatch.R;
 import edu.luc.etl.cs313.android.simplestopwatch.android.StopwatchAdapter;
+import edu.luc.etl.cs313.android.simplestopwatch.model.time.DefaultTimeModel;
 
 import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.SEC_PER_MIN;
 
@@ -35,7 +36,7 @@ public abstract class AbstractStopwatchActivityTest {
     /**
      * Verifies the following scenario: time is 0.
      *
-     * @throws Throwable
+     * @throws //Throwable
      */
     @Test
     public void testActivityScenarioInit() throws Throwable {
@@ -45,7 +46,7 @@ public abstract class AbstractStopwatchActivityTest {
     /**
      * Verifies the following scenario: time is 0, press start, wait 5+ seconds, expect time 5.
      *
-     * @throws Throwable
+     * @throws //Throwable
      */
     @Test
     public void testActivityScenarioRun() throws Throwable {
@@ -66,39 +67,8 @@ public abstract class AbstractStopwatchActivityTest {
      * expect time 5, press lap, wait 4 seconds, expect time 5, press start,
      * expect time 5, press lap, expect time 9, press lap, expect time 0.
      *
-     * @throws Throwable
+     * @throws //Throwable
      */
-    @Test
-    public void testActivityScenarioRunLapReset() throws Throwable {
-        getActivity().runOnUiThread(() -> {
-            assertEquals(0, getDisplayedValue());
-            assertTrue(getStartStopButton().performClick());
-        });
-        Thread.sleep(5500); // <-- do not run this in the UI thread!
-        runUiThreadTasks();
-        getActivity().runOnUiThread(() -> {
-            assertEquals(5, getDisplayedValue());
-            assertTrue(getResetLapButton().performClick());
-        });
-        Thread.sleep(4000); // <-- do not run this in the UI thread!
-        runUiThreadTasks();
-        getActivity().runOnUiThread(() -> {
-            assertEquals(5, getDisplayedValue());
-            assertTrue(getStartStopButton().performClick());
-        });
-        runUiThreadTasks();
-        getActivity().runOnUiThread(() -> {
-            assertEquals(5, getDisplayedValue());
-            assertTrue(getResetLapButton().performClick());
-        });
-        runUiThreadTasks();
-        getActivity().runOnUiThread(() -> {
-            assertEquals(9, getDisplayedValue());
-            assertTrue(getResetLapButton().performClick());
-        });
-        runUiThreadTasks();
-        getActivity().runOnUiThread(() -> assertEquals(0, getDisplayedValue()));
-    }
 
     // auxiliary methods for easy access to UI widgets
 
@@ -110,17 +80,13 @@ public abstract class AbstractStopwatchActivityTest {
 
     protected int getDisplayedValue() {
         final TextView ts = getActivity().findViewById(R.id.seconds);
-        final TextView tm = getActivity().findViewById(R.id.minutes);
-        return SEC_PER_MIN * tvToInt(tm) + tvToInt(ts);
+        return tvToInt(ts);
     }
 
     protected Button getStartStopButton() {
-        return (Button) getActivity().findViewById(R.id.startStop);
+        return (Button) getActivity().findViewById(R.id.AddReset);
     }
 
-    protected Button getResetLapButton() {
-        return (Button) getActivity().findViewById(R.id.resetLap);
-    }
 
     /**
      * Explicitly runs tasks scheduled to run on the UI thread in case this is required

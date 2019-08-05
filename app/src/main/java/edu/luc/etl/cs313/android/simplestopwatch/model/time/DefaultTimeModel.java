@@ -51,6 +51,6 @@ public class DefaultTimeModel implements TimeModel {
     @Override
     public void beeping(){
         ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
-        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200); 
+        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
     }
 }

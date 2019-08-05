@@ -1,5 +1,8 @@
 package edu.luc.etl.cs313.android.simplestopwatch.test.model.state;
 
+import android.media.AudioManager;
+import android.media.ToneGenerator;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -22,7 +25,7 @@ import edu.luc.etl.cs313.android.simplestopwatch.model.time.TimeModel;
  * object for all dependencies of the state machine model.
  *
  * @author laufer
- * @see http://xunitpatterns.com/Testcase%20Superclass.html
+ * @see //http://xunitpatterns.com/Testcase%20Superclass.html
  */
 public abstract class AbstractStopwatchStateMachineTest {
 
@@ -67,62 +70,34 @@ public abstract class AbstractStopwatchStateMachineTest {
         assertEquals(R.string.STOPPED, dependency.getState());
     }
 
-    /**
-     * Verifies the following scenario: time is 0, press start, wait 5+ seconds,
-     * expect time 5.
-     */
     @Test
-    public void testScenarioRun() {
-        assertTimeEquals(0);
-        // directly invoke the button press event handler methods
-        model.onStartStop();
-        onTickRepeat(5);
-        assertTimeEquals(5);
+    public void testActivityScenarioRunAfter3Seconds() {
+        model.toWaitingState();
+        if (model.actionGetThreeSecondTime() == 0) {
+            assertEquals("RUNNING", dependency.getState());
+        }
     }
 
-    /**
-     * Verifies the following scenario: time is 0, press start, wait 5+ seconds,
-     * expect time 5, press lap, wait 4 seconds, expect time 5, press start,
-     * expect time 5, press lap, expect time 9, press lap, expect time 0.
-     *
-     * @throws Throwable
-     */
     @Test
-    public void testScenarioRunLapReset() {
-        assertTimeEquals(0);
-        // directly invoke the button press event handler methods
-        model.onStartStop();
-        assertEquals(R.string.RUNNING, dependency.getState());
-        assertTrue(dependency.isStarted());
-        onTickRepeat(5);
-        assertTimeEquals(5);
-        model.onLapReset();
-        assertEquals(R.string.LAP_RUNNING, dependency.getState());
-        assertTrue(dependency.isStarted());
-        onTickRepeat(4);
-        assertTimeEquals(5);
-        model.onStartStop();
-        assertEquals(R.string.LAP_STOPPED, dependency.getState());
-        assertFalse(dependency.isStarted());
-        assertTimeEquals(5);
-        model.onLapReset();
-        assertEquals(R.string.STOPPED, dependency.getState());
-        assertFalse(dependency.isStarted());
-        assertTimeEquals(9);
-        model.onLapReset();
-        assertEquals(R.string.STOPPED, dependency.getState());
-        assertFalse(dependency.isStarted());
-        assertTimeEquals(0);
+    public void testActivityScenarioAlarmatMin() {
+        model.toRunningState();
+        if (model.actionGetTime() == 0) {
+            assertEquals("ALARM", dependency.getState());
+        }
     }
 
-    /**
-     * Sends the given number of tick events to the model.
-     *
-     *  @param n the number of tick events
-     */
-    protected void onTickRepeat(final int n) {
-        for (int i = 0; i < n; i++)
-            model.onTick();
+    @Test
+    public void testActivityScenarioStopAtRunning() {
+        model.toRunningState();
+        model.onClick();
+        assertEquals(R.string.STOPPED, dependency.getState());
+    }
+
+    @Test
+    public void testActivityScenarioStopAtAlarm() {
+        model.toAlarmState();
+        model.onClick();
+        assertEquals(R.string.STOPPED, dependency.getState());
     }
 
     /**
@@ -145,13 +120,15 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
 
     private int timeValue = -1, stateId = -1;
 
-    private int runningTime = 0, lapTime = -1;
+    private int time = 0, threeSecondTime = 3;
 
     private boolean started = false;
 
     public int getTime() {
         return timeValue;
     }
+
+    public int getThreeSecondTime() { return threeSecondTime; }
 
     public int getState() {
         return stateId;
@@ -187,27 +164,28 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
     }
 
     @Override
-    public void resetRuntime() {
-        runningTime = 0;
+    public void resetTime() {
+        time = 0;
     }
 
     @Override
-    public void incRuntime() {
-        runningTime++;
+    public void incTime() {
+        time++;
     }
 
     @Override
-    public int getRuntime() {
-        return runningTime;
-    }
+    public void decTime() { time--; }
 
     @Override
-    public void setLaptime() {
-        lapTime = runningTime;
-    }
+    public void decThreeSecondTime() { threeSecondTime--; }
 
     @Override
-    public int getLaptime() {
-        return lapTime;
+    public void resetThreeSecondTime() { threeSecondTime = 3; }
+
+    @Override
+    public void beeping(){
+        ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
     }
+
 }

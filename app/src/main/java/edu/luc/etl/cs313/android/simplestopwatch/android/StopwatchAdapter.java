@@ -10,6 +10,8 @@ import edu.luc.etl.cs313.android.simplestopwatch.common.Constants;
 import edu.luc.etl.cs313.android.simplestopwatch.common.StopwatchUIUpdateListener;
 import edu.luc.etl.cs313.android.simplestopwatch.model.ConcreteStopwatchModelFacade;
 import edu.luc.etl.cs313.android.simplestopwatch.model.StopwatchModelFacade;
+import edu.luc.etl.cs313.android.simplestopwatch.model.time.DefaultTimeModel;
+import edu.luc.etl.cs313.android.simplestopwatch.model.time.TimeModel;
 
 /**
  * A thin adapter component for the stopwatch.
@@ -62,11 +64,8 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
         // UI adapter responsibility to schedule incoming events on UI thread
         runOnUiThread(() -> {
             final TextView tvS = (TextView) findViewById(R.id.seconds);
-            final TextView tvM = (TextView) findViewById(R.id.minutes);
             final int seconds = time % Constants.SEC_PER_MIN;
-            final int minutes = time / Constants.SEC_PER_MIN;
             tvS.setText(Integer.toString(seconds / 10) + Integer.toString(seconds % 10));
-            tvM.setText(Integer.toString(minutes / 10) + Integer.toString(minutes % 10));
         });
     }
 
@@ -83,11 +82,8 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
     }
 
     // forward event listener methods to the model
-    public void onStartStop(final View view) {
-        model.onStartStop();
+    public void onClick(final View view) {
+        model.onClick();
     }
 
-    public void onLapReset(final View view)  {
-        model.onLapReset();
-    }
 }

@@ -1,14 +1,20 @@
 package edu.luc.etl.cs313.android.simplestopwatch.test.model.time;
 
+import android.widget.TextView;
+
 import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.SEC_PER_HOUR;
 import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.SEC_PER_MIN;
 import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.SEC_PER_TICK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import android.widget.TextView;
+
 import org.junit.Test;
 
+import edu.luc.etl.cs313.android.simplestopwatch.R;
 import edu.luc.etl.cs313.android.simplestopwatch.model.time.TimeModel;
+import edu.luc.etl.cs313.android.simplestopwatch.test.android.AbstractStopwatchActivityTest;
 
 /**
  * Testcase superclass for the time model abstraction.
@@ -35,55 +41,65 @@ public abstract class AbstractTimeModelTest {
      * Verifies that runtime and laptime are initially 0 or less.
      */
     @Test
-    public void testPreconditions() {
-        assertEquals(0, model.getRuntime());
-        assertTrue(model.getLaptime() <= 0);
+    public void testInitiallyAtMin(){
+        assertEquals(0, model.getTime());
+    }
+
+    @Test
+    public void testThreeSecondTime() {
+        assertTrue(model.getThreeSecondTime() == 3);
+    }
+
+    @Test
+    public void testGetDisplayedValueEqualsCurrentTime() {
+        //FIXME - complete
     }
 
     /**
      * Verifies that runtime is incremented correctly.
      */
     @Test
-    public void testIncrementRuntimeOne() {
-        final int rt = model.getRuntime();
-        final int lt = model.getLaptime();
-        model.incRuntime();
-        assertEquals((rt + SEC_PER_TICK) % SEC_PER_MIN, model.getRuntime());
-        assertEquals(lt, model.getLaptime());
+    public void testIncrement() {
+        model.resetTime();
+        final int displaytime = model.getTime();
+        model.incTime();
+        assertEquals(1, model.getTime());
     }
 
     /**
      * Verifies that runtime turns over correctly.
      */
     @Test
-    public void testIncrementRuntimeMany() {
-        final int rt = model.getRuntime();
-        final int lt = model.getLaptime();
-        for (int i = 0; i < SEC_PER_HOUR; i ++) {
-            model.incRuntime();
+    public void testIncrement5() {
+        model.resetTime();
+        final int displaytime = model.getTime();
+        for (int i = 0; i < 5; i ++) {
+            model.incTime();
         }
-        assertEquals(rt, model.getRuntime());
-        assertEquals(lt, model.getLaptime());
+        assertEquals(5, model.getTime());
     }
 
-    /**
-     * Verifies that laptime works correctly.
-     */
     @Test
-    public void testLaptime() {
-        final int rt = model.getRuntime();
-        final int lt = model.getLaptime();
+    public void testDecrementRuntimeOne() {
+        model.resetTime();
+        final int runtime = model.getTime();
         for (int i = 0; i < 5; i ++) {
-            model.incRuntime();
+            model.incTime();
         }
-        assertEquals(rt + 5, model.getRuntime());
-        assertEquals(lt, model.getLaptime());
-        model.setLaptime();
-        assertEquals(rt + 5, model.getLaptime());
+        model.decTime();
+        assertEquals(4, model.getTime());
+    }
+
+    @Test
+    public void testDecrementRuntime5() {
+        model.resetTime();
+        final int runtime = model.getTime();
         for (int i = 0; i < 5; i ++) {
-            model.incRuntime();
+            model.incTime();
         }
-        assertEquals(rt + 10, model.getRuntime());
-        assertEquals(rt + 5, model.getLaptime());
+        for (int i = 0; i < 5; i++) {
+            model.decTime();
+        }
+        assertEquals(0, model.getTime());
     }
 }

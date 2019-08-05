@@ -13,7 +13,7 @@ class RunningState implements StopwatchState {
 
     @Override
     public void onClick(){
-        sm.toWaitingState();
+        sm.toStoppedState();
         sm.actionResetThreeSecondTime();
         sm.actionReset();
     }

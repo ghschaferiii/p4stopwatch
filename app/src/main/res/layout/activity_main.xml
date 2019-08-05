@@ -51,7 +51,7 @@
             android:id="@+id/AddReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onStartStop"
+            android:onClick="onClick"
             android:text="@string/AddReset" />
     </RelativeLayout>
 
